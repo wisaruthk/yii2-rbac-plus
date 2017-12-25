@@ -58,7 +58,19 @@ abstract class AuthItem extends Model {
                 'range' => array_keys(Yii::$app->authManager->getRules()),
                 'message' => Yii::t('rbac', 'Rule not exists')],
             [['name'], 'required'],
-            [['name'], 'unique', 'when' => function() {
+            [['name'], function(){
+                // unique
+                $authManager = Yii::$app->authManager;
+                $value = $this->name;
+                if ($authManager->getRole($value) !== null || $authManager->getPermission($value) !== null) {
+                    $message = Yii::t('yii', '{attribute} "{value}" has already been taken.');
+                    $params = [
+                        'attribute' => $this->getAttributeLabel('name'),
+                        'value' => $value,
+                    ];
+                    $this->addError('name', Yii::$app->getI18n()->format($message, $params, Yii::$app->language));
+                }
+            }, 'when' => function() {
             return $this->isNewRecord || ($this->item->name != $this->name);
         }],
             [['description', 'data', 'ruleName'], 'default'],
