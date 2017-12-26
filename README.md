@@ -33,7 +33,17 @@ php composer.phar require --prefer-dist johnitvn/yii2-rbac-plus "*"
 or add
 
 ```
-"johnitvn/yii2-rbac-plus": "*"
+"require": {
+    ...
+    "johnitvn/yii2-rbac-plus": "dev-bugfix",
+},
+"repositories": [
+        ...
+        {
+            "type": "vcs",
+            "url": "https://github.com/wisaruthk/yii2-rbac-plus"
+        }
+    ],
 ```
 
 to the require section of your `composer.json` file.
